@@ -24,6 +24,7 @@ key_file=$HOME/.oci/oci_api_key.pem
 tenancy=$OCI_TENANCY
 region=$OCI_REGION
 EOF
+chmod 600 "$HOME/.oci/config"
 printf '%s' "$OCI_PRIVATE_KEY_B64" | base64 -d > "$HOME/.oci/oci_api_key.pem"
 chmod 600 "$HOME/.oci/oci_api_key.pem"
 

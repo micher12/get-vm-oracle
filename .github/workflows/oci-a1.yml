@@ -37,8 +37,8 @@ jobs:
           OCI_IMAGE_ID: ${{ secrets.OCI_IMAGE_ID }}
           OCI_AD: ${{ secrets.OCI_AD }}
           OCI_SSH_PUBLIC_KEY: ${{ secrets.OCI_SSH_PUBLIC_KEY }}
-          MAX_ATTEMPTS: '20'
-          SLEEP_SECONDS: '60'
+          MAX_ATTEMPTS: '10'
+          SLEEP_SECONDS: '120'
         run: |
           set -o pipefail
           bash oci-a1-launch.sh 2>&1 | tee launch.log
