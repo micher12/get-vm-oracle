@@ -37,7 +37,7 @@ jobs:
           OCI_IMAGE_ID: ${{ secrets.OCI_IMAGE_ID }}
           OCI_AD: ${{ secrets.OCI_AD }}
           OCI_SSH_PUBLIC_KEY: ${{ secrets.OCI_SSH_PUBLIC_KEY }}
-          MAX_ATTEMPTS: '10'
+          MAX_ATTEMPTS: '50'
           SLEEP_SECONDS: '120'
         run: |
           set -o pipefail
