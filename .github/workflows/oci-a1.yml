@@ -1,0 +1,56 @@
+name: OCI Ampere A1 Always Free
+
+on:
+  schedule:
+    # 05:00 UTC = 02:00 BRT (Horario de Brasilia, sem DST)
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  launch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar OCI CLI
+        run: pip install oci-cli
+
+      - name: Tentar criar VM
+        env:
+          OCI_USER: ${{ secrets.OCI_USER }}
+          OCI_TENANCY: ${{ secrets.OCI_TENANCY }}
+          OCI_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
+          OCI_REGION: ${{ secrets.OCI_REGION }}
+          OCI_PRIVATE_KEY_B64: ${{ secrets.OCI_PRIVATE_KEY_B64 }}
+          OCI_SUBNET_ID: ${{ secrets.OCI_SUBNET_ID }}
+          OCI_IMAGE_ID: ${{ secrets.OCI_IMAGE_ID }}
+          OCI_AD: ${{ secrets.OCI_AD }}
+          OCI_SSH_PUBLIC_KEY: ${{ secrets.OCI_SSH_PUBLIC_KEY }}
+          MAX_ATTEMPTS: '20'
+          SLEEP_SECONDS: '60'
+        run: |
+          set -o pipefail
+          bash oci-a1-launch.sh 2>&1 | tee launch.log
+
+      - name: Salvar resultado
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: oci-a1-result
+          path: |
+            launch.log
+            instance-id.txt
+            vm-info.txt
+          if-no-files-found: ignore
+          retention-days: 3

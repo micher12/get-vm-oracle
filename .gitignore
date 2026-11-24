@@ -1,0 +1,11 @@
+# Credenciais e dados gerados -- NUNCA versionar
+.oci/
+*.pem
+*.key
+*.pub
+.env
+config
+launch.log
+instance-id.txt
+vm-info.txt
+vm-info.json
